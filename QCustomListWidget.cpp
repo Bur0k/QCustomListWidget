@@ -1,9 +1,9 @@
-#include "list_widget.h"
+#include "QCustomListWidget.h"
 #include <QCoreApplication>
 #include <QScrollBar>
 #include <QDebug>
 
-List_Widget::List_Widget(QWidget *parent) :
+QCustomListWidget::QCustomListWidget(QWidget *parent) :
 	QWidget(parent), scroll(new QScrollArea()), scroll_widget(new QWidget()), main_layout(new QVBoxLayout())
 {
 	scroll->setWidget(scroll_widget);
@@ -22,7 +22,7 @@ List_Widget::List_Widget(QWidget *parent) :
 			this, SLOT(on_vert_slider_change(int)));
 }
 
-void List_Widget::on_vert_slider_change(int value)
+void QCustomListWidget::on_vert_slider_change(int value)
 {
 	int new_top_widget = get_top_item_index();
 	if (new_top_widget == old_top_widget)
@@ -32,14 +32,14 @@ void List_Widget::on_vert_slider_change(int value)
 	emit top_item_changed(new_top_widget);
 }
 
-void List_Widget::add_widget(QWidget *w)
+void QCustomListWidget::add_widget(QWidget *w)
 {
 	w->setAutoFillBackground(true);
 	widgets.push_back(w);
 	main_layout->addWidget(w);
 }
 
-void List_Widget::remove_widget(QWidget *w, bool delete_widget)
+void QCustomListWidget::remove_widget(QWidget *w, bool delete_widget)
 {
 	int index = widgets.indexOf(w);
 	if(index != -1)
@@ -51,12 +51,12 @@ void List_Widget::remove_widget(QWidget *w, bool delete_widget)
 	}
 }
 
-void List_Widget::delete_widget(QWidget *w)
+void QCustomListWidget::delete_widget(QWidget *w)
 {
 	remove_widget(w, true);
 }
 
-void List_Widget::clear()
+void QCustomListWidget::clear()
 {
 	for(auto w : widgets)
 		delete_widget(w);
@@ -64,12 +64,12 @@ void List_Widget::clear()
 	selection = nullptr;
 }
 
-QList<QWidget *> List_Widget::get_all_widgets()
+QList<QWidget *> QCustomListWidget::get_all_widgets()
 {
 	return widgets;
 }
 
-int List_Widget::get_top_item_index()
+int QCustomListWidget::get_top_item_index()
 {
 	if (widgets.size() == 0)
 		return 0;
@@ -99,7 +99,7 @@ int List_Widget::get_top_item_index()
 	return value_without_first_spacing/(item_height+spacing);
 }
 
-int List_Widget::get_item_count_in_view()
+int QCustomListWidget::get_item_count_in_view()
 {
 	if(widgets.size() == 0)
 		return 0;
@@ -110,12 +110,12 @@ int List_Widget::get_item_count_in_view()
 	return viewport_height / item_height;
 }
 
-void List_Widget::scroll_to_top()
+void QCustomListWidget::scroll_to_top()
 {
 	scroll->ensureVisible(0,0,0,0);
 }
 
-void List_Widget::mousePressEvent(QMouseEvent *event)
+void QCustomListWidget::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 	{
@@ -133,7 +133,7 @@ void List_Widget::mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void List_Widget::mouseReleaseEvent(QMouseEvent *event)
+void QCustomListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 	{
@@ -166,7 +166,7 @@ void List_Widget::mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-void List_Widget::mouseDoubleClickEvent(QMouseEvent *event)
+void QCustomListWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 		emit double_clicked(childAt(event->pos()));

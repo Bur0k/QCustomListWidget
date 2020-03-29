@@ -9,7 +9,7 @@
 #include <QList>
 #include <QString>
 
-class List_Widget : public QWidget
+class QCustomListWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -36,7 +36,7 @@ public slots:
 	void on_vert_slider_change(int value);
 
 public:
-	explicit List_Widget(QWidget *parent = 0);
+	explicit QCustomListWidget(QWidget *parent = 0);
 
 	void add_widget(QWidget *w);//Don't forget to setAttribute(Qt::WA_TransparentForMouseEvents); on all of the children of that widget
 	void remove_widget(QWidget *w, bool delete_widget = false);
